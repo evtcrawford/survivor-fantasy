@@ -68,7 +68,6 @@
 </header>
 
 
-
 <button type="button" class="collapsible">Leaderboard</button>
 <div class="content">
 
@@ -113,44 +112,11 @@ for (let i = 0; i < coll.length; i++) {
       content.style.display === "block" ? "none" : "block";
   });
 }
-
-// =====================
-// GOOGLE SHEETS FETCH
-// =====================
-
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzBy8ysjRlhU8qJbVeUQPl_cuZhDwRkHgzSYNAsHbgyjj_IFEyhSfBCYEJ6ptvNvOF8Sf37-4xDL6Z/pub?gid=0&single=true&output=csv";
-
-fetch(sheetURL)
-  .then(response => response.text())
-  .then(csv => {
-
-    const rows = csv.trim().split("\n");
-    const tbody = document.querySelector("#leaderboard tbody");
-    tbody.innerHTML = "";
-
-    rows.slice(1).forEach((row, index) => {
-      if (!row) return;
-
-      const cols = row.split(",");
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${cols[0] || ""}</td>
-        <td>${cols[1] || ""}</td>
-        <td>${cols[2] || ""}</td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-
-  })
-  .catch(err => console.error("Sheet error:", err));
-
 </script>
 
 
 </body>
 </html>
+
 
 
