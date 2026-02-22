@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+ body {
+      background: #000000;
+    }
+
+    header {
+      text-align: center;
+      padding:10px;
+      background: #000000;
+      border-bottom: 2px solid gold;
+    }
+
+    header h1 {
+      margin: 0;
+	  color: #aaa;
+      font-size: 18px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: #aaa;
+      font-size: 10px;
+    }
+	
+	table, th, td {
+		border:1px solid black;
+		text-align: center;
+		background: #f1f1f1;
+	}
+	
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+
+</style>
+</head>
+<body>
+
+<header>
+<img src="https://thumbnails.cbsig.net/CBS_Production_Entertainment_VMS/2025/05/28/2430107203945/50logo_3251842_1920x1080.jpg" alt="logo" style="width:160px;height:90px;">
+  <h1>Survivor Fantasy League</h1>
+    <p>Outwit. Outplay. Outscore.</p>
+</header>
+
+
+
+<button type="button" class="collapsible">Leaderboard</button>
+<div class="content">
+
+<table id="leaderboard" style="width:100%">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Player</th>
+      <th>Castaways</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+</div>
+
+<button type="button" class="collapsible">Castaways</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button type="button" class="collapsible">Prop Bets</button>
+<div class="content">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<script>
+
+// =====================
+// COLLAPSIBLE
+// =====================
+
+var coll = document.getElementsByClassName("collapsible");
+
+for (let i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    content.style.display =
+      content.style.display === "block" ? "none" : "block";
+  });
+}
+
+// =====================
+// GOOGLE SHEETS FETCH
+// =====================
+
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzBy8ysjRlhU8qJbVeUQPl_cuZhDwRkHgzSYNAsHbgyjj_IFEyhSfBCYEJ6ptvNvOF8Sf37-4xDL6Z/gviz/tq?tqx=out:csv&gid=0";
+
+fetch(sheetURL)
+  .then(response => response.text())
+  .then(data => {
+
+    const rows = data.trim().split("\n").map(r => r.split(","));
+    const headers = rows.shift(); // remove header row
+    const tbody = document.querySelector("#leaderboard tbody");
+    tbody.innerHTML = "";
+
+    rows.forEach((cols, index) => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${cols[0]}</td>
+        <td>${cols[1]}</td>
+        <td>${cols[2]}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+  })
+  .catch(error => {
+    console.error("Error loading sheet:", error);
+  });
+
+</script>
+
+
+</body>
+</html>
